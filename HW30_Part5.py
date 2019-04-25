@@ -24,19 +24,19 @@ class ExampleApp(QtGui.QMainWindow):
         
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(900,900)
+        MainWindow.resize(350,300)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName('centralwidget')
         
         self.graphicsView = PlotWidget(self.centralwidget)
-        self.graphicsView.setGeometry(QtCore.QRect(200,200,500,500))
+        self.graphicsView.setGeometry(QtCore.QRect(20,20,300,300))
         self.graphicsView.setObjectName("graphicsView")
         MainWindow.setCentralWidget(self.centralwidget)
         
-    def analogInput(channel):
-    spi.max_speed_hz=1350000
-    adc=spi.xfer2([1,(8+channel)<<4,0])
-    data=((adc[1]&3)<<8)+adc[2]
+    def analogInput(self, channel):
+        spi.max_speed_hz=1350000
+        adc=spi.xfer2([1,(8+channel)<<4,0])
+        data=((adc[1]&3)<<8)+adc[2]
     return data
         
     def update(self):
@@ -45,8 +45,8 @@ class ExampleApp(QtGui.QMainWindow):
         n=0
         dataLst=[]
         while n<100:
-            dataPoint=ser.readline()
-            dataPoint=int(dataPoint)
+            dataPoint=self.analogInput()
+            #dataPoint=int(dataPoint)
             dataLst.append(dataPoint)
             n+=1
         Y=dataLst
